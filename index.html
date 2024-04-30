@@ -20,9 +20,12 @@
             </div>
         </div>
         <div class="text-end me-5">
-            <div class="me-5">
+            <div class="me-5 mb-5">
                 <button id="procesar" class="btn btn-outline-dark me-5">Procesar información</button>
             </div>
+        </div>
+        <div id="resultado">
+
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -43,6 +46,20 @@
             'Radiohead',
             'The Rolling Stones'
         ]
+        // The Beatles - Rock / Pop
+        // Led Zeppelin - Rock / Hard Rock
+        // Nirvana - Grunge / Rock Alternativo
+        // Queen - Rock / Rock Sinfónico
+        // Metallica - Metal / Thrash Metal
+        // Coldplay - Pop / Rock Alternativo
+        // Daft Punk - Electrónica / House
+        // AC/DC - Rock / Hard Rock
+        // Radiohead - Rock Alternativo / Experimental
+        // The Rolling Stones - Rock / Blues Rock
+        const genre = [
+            'Rock',
+
+        ]
         let data = ''
         grupos.forEach((values) => {
          data +=`
@@ -50,7 +67,7 @@
                     <p>${values}</p>
                     <input type="number" class="score">
                 </div>
-        `
+                `
         })
      
         document.getElementById('grupos').innerHTML = data
@@ -59,9 +76,11 @@
         procesar.addEventListener('click', () => {
             const score = document.querySelectorAll('.score')
             score.forEach((s) => {
-                if (s.value == undefined){
-                    return 
+                if (s.value == ''){
+                    return document.getElementById('resultado').innerHTML = '<h1 class="text-center text-danger">Tienes que calificar todos grupos</h1>'
                 }
+
+
             })
         })
 
