@@ -1,35 +1,64 @@
-async function getData() {
-    const carsDataResponse = await fetch('https://storage.googleapis.com/tfjs-tutorials/carsData.json');
-    const carsData = await carsDataResponse.json();
-    console.log(carsData);
-    const cleaned = carsData.map(car => ({
-      mpg: car.Miles_per_Gallon,
-      horsepower: car.Horsepower,
-    }))
-    .filter(car => (car.mpg != null && car.horsepower != null));
-  
-    return cleaned;
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  const musicGroups = [
+    { id: 1, name: "Led Zeppelin", genre: "Rock" },
+    { id: 2, name: "Miles Davis", genre: "Jazz" },
+    { id: 3, name: "Michael Jackson", genre: "Pop" },
+    { id: 4, name: "Pink Floyd", genre: "Rock" },
+    { id: 5, name: "John Coltrane", genre: "Jazz" },
+    { id: 6, name: "Madonna", genre: "Pop" }
+];
 
-async function run() {
-    // Load and plot the original input data that we are going to train on.
-    const data = await getData();
-    const values = data.map(d => ({
-      x: d.horsepower,
-      y: d.mpg,
-    }));
-  
-    tfvis.render.scatterplot(
-      {name: 'Horsepower v MPG'},
-      {values},
-      {
-        xLabel: 'Horsepower',
-        yLabel: 'MPG',
-        height: 300
+  const ratingForm = document.getElementById('rating-form');
+  const processButton = document.getElementById('process-button');
+  const resultSection = document.getElementById('result');
+  const rankingList = document.getElementById('ranking-list');
+
+  musicGroups.forEach(group => {
+      const div = document.createElement('div');
+      div.className = 'group-rating';
+      
+      const label = document.createElement('label');
+      label.setAttribute('for', `group-${group.id}`);
+      label.textContent = group.name;
+      
+      const select = document.createElement('select');
+      select.setAttribute('name', group.id);
+      select.setAttribute('id', `group-${group.id}`);
+      
+      for (let i = 1; i <= 10; i++) {
+          const option = document.createElement('option');
+          option.setAttribute('value', i);
+          option.textContent = i;
+          select.appendChild(option);
       }
-    );
-  
-    // More code will be added below
-  }
-  
-  document.addEventListener('DOMContentLoaded', run);
+      
+      div.appendChild(label);
+      div.appendChild(select);
+      ratingForm.appendChild(div);
+  });
+
+  processButton.addEventListener('click', () => {
+      const ratings = [];
+      
+      
+
+      musicGroups.forEach(group => {  
+        
+          const rating = document.getElementById(`group-${group.id}`).value;
+
+
+          ratings.push({ id: group.id, name: group.genre, rating: parseInt(rating) });
+      });
+      
+      ratings.sort((a, b) => b.rating - a.rating);
+      
+      rankingList.innerHTML = '';
+      ratings.forEach(group => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `Group: ${group.name} - Rating: ${group.rating}`;
+          rankingList.appendChild(listItem);
+      });
+      
+      resultSection.style.display = 'block';
+  });
+});
